@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:rickandmorty/pages/personagem/personagem.dart';
+import 'package:rickandmorty/pages/personagem/personagem_card.dart';
 import 'package:rickandmorty/pages/personagem/personagem_listview.dart';
 import 'package:rickandmorty/pages/personagem/personagens_bloc.dart';
 import 'package:rickandmorty/widgets/app_bar_top.dart';
