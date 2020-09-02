@@ -30,7 +30,6 @@ class _PersonagensState extends State<Personagens>
   @override
   void initState() {
     super.initState();
-    print('entrei');
     _bloc.fetch();
   }
 
@@ -49,7 +48,7 @@ class _PersonagensState extends State<Personagens>
               stream: _bloc.stream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Não foi possivel buscar os carros');
+                  return Text('Não foi possivel buscar os personagens');
                 }
                 if (!snapshot.hasData) {
                   return Center(
@@ -59,7 +58,7 @@ class _PersonagensState extends State<Personagens>
                 List<Personagem> personagens = snapshot.data;
                 return RefreshIndicator(
                   onRefresh: _onRefresh,
-                  child: PersonagemListView(personagens),
+                  child: PersonagemListView(personagens, scrollGetMore),
                   color: const Color(0xff8bc6c0),
                 );
               },
@@ -269,6 +268,12 @@ class _PersonagensState extends State<Personagens>
 
   Future<void> _onRefresh() {
     return _bloc.fetch();
+  }
+
+  void scrollGetMore() {
+    setState(() {
+      _bloc.getMore();
+    });
   }
 }
 
