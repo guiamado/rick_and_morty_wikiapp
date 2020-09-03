@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:rickandmorty/pages/personagem/personagem.dart';
+import 'package:rickandmorty/pages/personagem/personagem_page.dart';
+import 'package:rickandmorty/utils/nav.dart';
 
 class PersonagemCard extends StatelessWidget {
   Personagem personagem;
@@ -9,7 +11,7 @@ class PersonagemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       // onTap: () {
-      //   _onPressed(context, page);
+      //   _onPressed(context);
       // },
       child: Card(
         child: Container(
@@ -70,5 +72,7 @@ class PersonagemCard extends StatelessWidget {
     );
   }
 
-  _onPressed(BuildContext context) {}
+  _onPressed(BuildContext context) {
+    push(context, PersonagemPage(personagem));
+  }
 }
