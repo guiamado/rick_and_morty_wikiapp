@@ -29,7 +29,7 @@ class HomeCard extends StatelessWidget {
                     child: Image.asset(
                       imgPath,
                       width: 350,
-                      height: 200,
+                      height: 150,
                       fit: BoxFit.fitWidth,
                     ),
                   ),

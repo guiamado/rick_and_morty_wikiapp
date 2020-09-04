@@ -37,4 +37,17 @@ class PersonagemApi {
 
     return personagens;
   }
+
+  static Future<Personagem> getPersonagem(String url) async {
+    // var url = 'https://rickandmortyapi.com/api/character/';
+
+    var response = await http.get(url);
+
+    String json = response.body;
+
+    Map<String, dynamic> jsonDecoded = convert.json.decode(json);
+    Personagem personagem = Personagem.fromJson(jsonDecoded);
+
+    return personagem;
+  }
 }

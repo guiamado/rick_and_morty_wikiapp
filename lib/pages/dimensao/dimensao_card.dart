@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rickandmorty/pages/dimensao/dimensao.dart';
+import 'package:rickandmorty/pages/personagem/personagem_chips.dart';
+import 'package:rickandmorty/utils/nav.dart';
 import 'package:rickandmorty/widgets/text.dart';
 
 class DimensaoCard extends StatelessWidget {
@@ -47,20 +49,20 @@ class DimensaoCard extends StatelessWidget {
                   text(dateFormat.format(DateTime.parse(dimensao.created))),
                 ],
               ),
-              // ButtonBar(
-              //   children: <Widget>[
-              //     FlatButton(
-              //       child: const Text(
-              //         'DETALHES',
-              //         style: TextStyle(
-              //           fontSize: 20,
-              //           color: const Color(0xff8bc6c0),
-              //         ),
-              //       ),
-              //       onPressed: () => _onPressed(context),
-              //     ),
-              //   ],
-              // ),
+              ButtonBar(
+                children: <Widget>[
+                  FlatButton(
+                    child: const Text(
+                      'DETALHES',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: const Color(0xff8bc6c0),
+                      ),
+                    ),
+                    onPressed: () => _onPressed(context),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -68,7 +70,7 @@ class DimensaoCard extends StatelessWidget {
     );
   }
 
-  // _onPressed(BuildContext context) {
-  //   push(context, PersonagemPage(personagem));
-  // }
+  _onPressed(BuildContext context) {
+    push(context, PersonagemChips(dimensao.residents, dimensao.name));
+  }
 }
