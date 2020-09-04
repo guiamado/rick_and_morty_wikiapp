@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:rickandmorty/pages/dimensao/dimensao.dart';
+import 'package:rickandmorty/pages/dimensao/dimensao_bloc.dart';
+import 'package:rickandmorty/pages/dimensao/dimensao_listview.dart';
 import 'package:rickandmorty/widgets/app_bar_top.dart';
 import './Favoritos.dart';
 import 'package:adobe_xd/page_link.dart';
@@ -8,20 +11,57 @@ import './Episodios.dart';
 import './Personagens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Dimensoes extends StatelessWidget {
+class Dimensoes extends StatefulWidget {
   Dimensoes({
     Key key,
   }) : super(key: key);
+
+  @override
+  _DimensoesState createState() => _DimensoesState();
+}
+
+class _DimensoesState extends State<Dimensoes>
+    with AutomaticKeepAliveClientMixin<Dimensoes> {
+  bool get wantKeepAlive => true;
+  final _bloc = DimensaoBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(56),
-        child: AppBarTop('Dimensões'),
+        child: AppBarTop('Localizações'),
       ),
       backgroundColor: const Color(0xfff0f3f4),
       body: Stack(
         children: <Widget>[
+          Center(
+            child: StreamBuilder(
+              stream: _bloc.stream,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Não foi possivel buscar as dimensões');
+                }
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List<Dimensao> dimensao = snapshot.data;
+                return RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: DimensaoListView(dimensao, scrollGetMore),
+                  color: const Color(0xff8bc6c0),
+                );
+              },
+            ),
+          ),
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 742.2, 375.0, 70.0),
             size: Size(375.0, 812.0),
@@ -119,10 +159,10 @@ class Dimensoes extends StatelessWidget {
             bounds: Rect.fromLTWH(236.0, 787.0, 60.0, 16.0),
             size: Size(375.0, 812.0),
             pinBottom: true,
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
             child: Text(
-              'Dimensões',
+              'Localizações',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 12,
@@ -221,6 +261,22 @@ class Dimensoes extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _onRefresh() {
+    return _bloc.fetch();
+  }
+
+  void scrollGetMore() {
+    setState(() {
+      _bloc.getMore();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }
 

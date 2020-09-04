@@ -203,13 +203,5 @@ class _PersonagemPageState extends State<PersonagemPage> {
     var stringTranslated =
         await translator.translate(input, from: 'en', to: 'pt');
     return stringTranslated.text;
-    // String resultado;
-    // translator.translate(input, from: 'en', to: 'pt').then((value) {
-    //   resultado = value.text;
-    //   print('valor >>> ${value.text}');
-    //   // print('traduzido2 $resultado');
-    // });
-    // print('traduzido $resultado');
-    // return resultado;
   }
 }

@@ -26,6 +26,8 @@ dependencies:
   adobe_xd: ^1.0.0+1
   http: ^0.12.1
   connectivity: ^0.4.9
+  intl: ^0.16.1
+  translator: ^0.1.5
 
 
   # The following adds the Cupertino Icons font to your application.

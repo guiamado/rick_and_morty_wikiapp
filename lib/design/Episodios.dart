@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:rickandmorty/pages/episodio/episodio.dart';
+import 'package:rickandmorty/pages/episodio/episodio_bloc.dart';
+import 'package:rickandmorty/pages/episodio/episodio_lisview.dart';
 import 'package:rickandmorty/widgets/app_bar_top.dart';
 import './Favoritos.dart';
 import 'package:adobe_xd/page_link.dart';
@@ -8,10 +11,27 @@ import './Dimensoes.dart';
 import './Personagens.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Episodios extends StatelessWidget {
+class Episodios extends StatefulWidget {
   Episodios({
     Key key,
   }) : super(key: key);
+
+  @override
+  _EpisodiosState createState() => _EpisodiosState();
+}
+
+class _EpisodiosState extends State<Episodios>
+    with AutomaticKeepAliveClientMixin<Episodios> {
+  bool get wantKeepAlive => true;
+
+  final _bloc = EpisodioBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.fetch();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +42,27 @@ class Episodios extends StatelessWidget {
       backgroundColor: const Color(0xfff0f3f4),
       body: Stack(
         children: <Widget>[
+          Center(
+            child: StreamBuilder(
+              stream: _bloc.stream,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Não foi possivel buscar as dimensões');
+                }
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List<Episodio> episodios = snapshot.data;
+                return RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: EpisodioListView(episodios, scrollGetMore),
+                  color: const Color(0xff8bc6c0),
+                );
+              },
+            ),
+          ),
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 742.2, 375.0, 70.0),
             size: Size(375.0, 812.0),
@@ -221,6 +262,22 @@ class Episodios extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _onRefresh() {
+    return _bloc.fetch();
+  }
+
+  void scrollGetMore() {
+    setState(() {
+      _bloc.getMore();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
   }
 }
 

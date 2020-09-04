@@ -275,6 +275,12 @@ class _PersonagensState extends State<Personagens>
       _bloc.getMore();
     });
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
 }
 
 const String _svg_xzq720 =

@@ -24,7 +24,7 @@ class _HomeListViewState extends State<HomeListView> {
           HomeCard(
             page: Dimensoes(),
             imgPath: 'assets/images/dimensionsHome.png',
-            titleCard: 'Dimensões',
+            titleCard: 'Localizações',
           ),
           HomeCard(
             page: Episodios(),
